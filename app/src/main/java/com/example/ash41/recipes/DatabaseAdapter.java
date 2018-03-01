@@ -101,8 +101,8 @@ public class DatabaseAdapter {
                 ArrayList<Ingredient> array_ingred = new ArrayList<>();
                 ingred = rs.getString("Ingredients");
                 String[] allIngredients = ingred.split("\n");
-                for (int i = 0; i < allIngredients.length; ++i) {
-                    String[] ingredInfo = allIngredients[i].split(": ");
+                for (String ingredient : allIngredients) {
+                    String[] ingredInfo = ingredient.split(": ");
                     Ingredient ingr;
                     if (ingredInfo.length == 1) {
                         ingr = new Ingredient(ingredInfo[0], " ");
