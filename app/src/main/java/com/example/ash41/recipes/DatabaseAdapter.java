@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class DatabaseAdapter {
-    private static final String url = "jdbc:mysql://10.0.2.2:13826/db_recipes";
+    private static final String url = "jdbc:mysql://128.72.47.234:13826/db_recipes";
     private static final String user = "root";
     private static final String password = "15263A";
 
