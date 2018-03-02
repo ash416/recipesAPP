@@ -25,7 +25,8 @@ public class RecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         DatabaseTask dataTask = new DatabaseTask();
-        dataTask.execute("Грибы");
+        String[] str = {"Грибы"};
+        dataTask.execute(str);
     }
 
     class DatabaseTask extends AsyncTask<String, Void, ArrayList<Recipe> > {

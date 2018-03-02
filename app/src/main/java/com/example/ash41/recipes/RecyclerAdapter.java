@@ -38,7 +38,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             view.setOnClickListener(this);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         public void onClick(View view){
             int position = getLayoutPosition();
             Intent intent = new Intent(view.getContext(), RecipeInfoActivity.class);
@@ -58,7 +57,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position){
         Recipe recipe = recipes.get(position);
