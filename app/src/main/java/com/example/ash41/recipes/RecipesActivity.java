@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 
+import java.awt.font.TextAttribute;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class RecipesActivity extends AppCompatActivity {
@@ -24,14 +26,15 @@ public class RecipesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
-        DatabaseTask dataTask = new DatabaseTask();
-        String[] str = {"Грибы"};
-        dataTask.execute(str);
+        //DatabaseTask dataTask = new DatabaseTask();
+        List<String> ingredients = getIntent().getExtras().getStringArrayList("chosen_ingredients");
+        //dataTask.execute();
     }
 
     class DatabaseTask extends AsyncTask<String, Void, ArrayList<Recipe> > {
         @Override
-        protected ArrayList<Recipe> doInBackground(String... ingredients) {
+        protected ArrayList<Recipe> doInBackground(String... ingrs) {
+            List<String> ingredients = Arrays.asList(ingrs);
             ArrayList<Recipe> recipes = new ArrayList<>();
             DatabaseAdapter dbAdapter = new DatabaseAdapter();
             try {

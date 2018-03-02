@@ -1,5 +1,7 @@
 package com.example.ash41.recipes;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,11 +19,13 @@ class DatabaseAdapter {
     private static Statement stmt;
     private static ResultSet rs;
 
-    private List<Integer> getIdIngredients(String[] ingredients) throws SQLException {
+    public static String TAG = "DATABASE ADAPTER";
+
+    private List<Integer> getIdIngredients(List<String> ingredients) throws SQLException {
         List<Integer> id = new ArrayList<>();
-        String query = "select id from ingredients where name LIKE" + " \'%" + ingredients[0] + "%\'";
-        for (int i = 1; i < ingredients.length; i++) {
-            query += " or name LIKE" + "\"%" + ingredients[i] + "%\"";
+        String query = "select id from ingredients where name LIKE" + " \'%" + ingredients.get(0) + "%\'";
+        for (int i = 1; i < ingredients.size(); i++) {
+            query += " or name LIKE" + "\"%" + ingredients.get(i) + "%\"";
         }
         rs = stmt.executeQuery(query);
         while (rs.next())
@@ -61,9 +65,11 @@ class DatabaseAdapter {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);
             stmt = con.createStatement();
+            Log.d(TAG, "Connection established");
     }
     void closeConnection() throws SQLException {
         con.close();
+        Log.d(TAG, "Connection closed");
     }
 
     Recipe getData(String recipeName) throws ClassNotFoundException,
@@ -71,22 +77,19 @@ class DatabaseAdapter {
                                                 InstantiationException,
                                                 SQLException {
         Recipe recipe = null;
-        connectToDatabase();
         String query = "SELECT DISTINCT `Name`, `Description`, `Image`, `Ingredients` from recipes where Name=" + "\'" + recipeName + "\'";
         rs = stmt.executeQuery(query);
         while (rs.next()) {
             recipe = getRecipe();
         }
-        closeConnection();
         return recipe;
     }
 
-    ArrayList<Recipe> getData(String[] ingredients) throws ClassNotFoundException,
+    ArrayList<Recipe> getData(List<String> ingredients) throws ClassNotFoundException,
                                                             SQLException,
                                                             InstantiationException,
                                                             IllegalAccessException {
         ArrayList<Recipe> recipes = new ArrayList<>();
-        connectToDatabase();
         List<Integer> id = getIdIngredients(ingredients);
         List<Integer> idRecipes = getIdRecipes(id);
         String query = "SELECT DISTINCT `Name`, `Description`, `Image`, `Ingredients` from recipes where ID=" + idRecipes.get(0);
@@ -99,8 +102,6 @@ class DatabaseAdapter {
             recipe.setHaveIngredients(ingredients);
             recipes.add(recipe);
         }
-         closeConnection();
-
         return recipes;
     }
 }

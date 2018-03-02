@@ -42,7 +42,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             int position = getLayoutPosition();
             Intent intent = new Intent(view.getContext(), RecipeInfoActivity.class);
             intent.putExtra("name", recipes.get(position).getName());
-            intent.putExtra("have_ingredients", recipes.get(position).getHaveIngredients());
+            intent.putExtra("have_ingredients", recipes.get(position).getHaveIngredients().toString());
             view.getContext().startActivity(intent);
         }
     }

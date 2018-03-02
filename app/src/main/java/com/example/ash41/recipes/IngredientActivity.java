@@ -3,6 +3,7 @@ package com.example.ash41.recipes;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,9 +14,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,6 +27,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 public class IngredientActivity extends AppCompatActivity {
     MaterialSearchView searchView;
+    DatabaseAdapter databaseAdapter;
+    String TAG = "INGREDIENT ACTIVITY";
 
     List<String> ingredientsList = Arrays.asList(
             "milk",
@@ -40,22 +44,41 @@ public class IngredientActivity extends AppCompatActivity {
     List<String> chosenIngredients = new ArrayList<String>();
     ListView lstView;
 
-    public void showSelectedItems(View view, List<String> ingrs){
-        for (String ingredient:chosenIngredients){
-            int idx = ingrs.indexOf(ingredient);
-            if (idx >= 0){
-                Log.d("RRRRRRRRRRRR", ingrs.toString());
-                Log.d("RRRRRRRRRRRR", lstView.getAdapter().getView(idx, null, lstView).toString());
-                ListAdapter listAdapter = lstView.getAdapter();
-                listAdapter.getView(idx, null, lstView).setBackgroundColor(Color.CYAN);
-                lstView.setAdapter(listAdapter);
+    class ConnectionToDatabase extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                databaseAdapter.connectToDatabase();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
+            return null;
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            databaseAdapter.closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
+        databaseAdapter = new DatabaseAdapter();
+        ConnectionToDatabase connectionToDatabase = new ConnectionToDatabase();
+        connectionToDatabase.execute();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -93,7 +116,6 @@ public class IngredientActivity extends AppCompatActivity {
             public void onSearchViewClosed() {
                 ArrayAdapter <String> adapter = new ArrayAdapter(IngredientActivity.this, android.R.layout.simple_list_item_1, ingredientsList);
                 lstView.setAdapter(adapter);
-                showSelectedItems(lstView, ingredientsList);
             }
 
 
@@ -120,7 +142,6 @@ public class IngredientActivity extends AppCompatActivity {
                 }
                 ArrayAdapter <String> adapter = new ArrayAdapter(IngredientActivity.this, android.R.layout.simple_list_item_1, foundIngredients);
                 lstView.setAdapter(adapter);
-                showSelectedItems(lstView, foundIngredients);
                 return false;
             }
         });
@@ -128,8 +149,14 @@ public class IngredientActivity extends AppCompatActivity {
         findRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try {
+                    List<Recipe> recipes = databaseAdapter.getData(chosenIngredients);
+                    Log.d(TAG, recipes.get(0).getName());
+                } catch (Exception e) {
+                    Log.d(TAG, "EXCEPTION");
+                }
                 Intent intent = new Intent(IngredientActivity.this, RecipesActivity.class);
-                intent.putExtra("chosen_ingredients", String.valueOf(chosenIngredients));
+                intent.putStringArrayListExtra("chosen_ingredients", (ArrayList<String>) chosenIngredients);
                 startActivity(intent);
             }
         });

@@ -1,6 +1,7 @@
 package com.example.ash41.recipes;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 class Ingredient{
@@ -29,7 +30,7 @@ public class Recipe {
     private String name;
     private String image;
     private ArrayList<Ingredient> ingredients;
-    private String[] haveIngredients;
+    private List<String> haveIngredients;
     private String description;
 
     public Recipe(String name, String description, String image, ArrayList<Ingredient> ingredients){
@@ -38,8 +39,8 @@ public class Recipe {
         this.ingredients = ingredients;
         this.description = description;
     }
-    public void setHaveIngredients(String[] haveIngredients){ this.haveIngredients = haveIngredients; }
-    public String[] getHaveIngredients() {return this.haveIngredients; }
+    public void setHaveIngredients(List<String> haveIngredients){ this.haveIngredients = haveIngredients; }
+    public List<String> getHaveIngredients() {return this.haveIngredients; }
     public String getDescription(){ return this.description; }
     public void setDescription(String description) { this.description = description; }
     public String getName() {
@@ -65,7 +66,7 @@ public class Recipe {
 
     public int getCountNeedIngredients(){
         int countIngredients = 0;
-        String[] haveIngredients = this.haveIngredients;
+        List<String> haveIngredients = this.haveIngredients;
         ArrayList<String> ingredients = this.getIngredients();
         for (String ingredient: ingredients){
             for (String item: haveIngredients){
