@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.ash41.recipes.IngredientActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- tools:context="com.example.ash41.recipes.IngredientActivity"-->
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -17,12 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
-        app:searchBackground="@color/colorPrimary"
-        app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
-        app:searchSuggestionBackground="@color/colorPrimary"
-        app:searchSuggestionIcon="@drawable/ic_suggestion"/>
+        android:textColorHint="@color/white"/>
+    <!--app:searchBackground="@color/colorPrimary"
+    app:searchSuggestionBackground="@color/colorPrimary"/>
+app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
+app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
+app:searchSuggestionIcon="@drawable/ic_suggestion"-->
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constr_listview_layout"
