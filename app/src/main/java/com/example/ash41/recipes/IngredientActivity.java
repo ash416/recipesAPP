@@ -152,8 +152,14 @@ public class IngredientActivity extends AppCompatActivity {
                 try {
                     List<Recipe> recipes = databaseAdapter.getData(chosenIngredients);
                     Log.d(TAG, recipes.get(0).getName());
-                } catch (Exception e) {
-                    Log.d(TAG, "EXCEPTION");
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    e.printStackTrace();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
                 Intent intent = new Intent(IngredientActivity.this, RecipesActivity.class);
                 intent.putStringArrayListExtra("chosen_ingredients", (ArrayList<String>) chosenIngredients);
