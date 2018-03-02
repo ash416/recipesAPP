@@ -30,4 +30,5 @@ dependencies {
     compile 'com.android.support:cardview-v7:27.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'mysql:mysql-connector-java:5.1.45'
+    compile 'com.miguelcatalan:materialsearchview:1.1.0'
 }
