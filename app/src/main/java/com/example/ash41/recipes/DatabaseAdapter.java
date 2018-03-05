@@ -18,14 +18,22 @@ class DatabaseAdapter {
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
+    private static String state;
 
     public static String TAG = "DATABASE ADAPTER";
 
+    DatabaseAdapter() {
+        state = "NOT CONNECTED";
+    }
+
+    public String getState(){
+        return state;
+    }
     private List<Integer> getIdIngredients(List<String> ingredients) throws SQLException {
         List<Integer> id = new ArrayList<>();
         String query = "select id from ingredients where name LIKE" + " \'%" + ingredients.get(0) + "%\'";
         for (int i = 1; i < ingredients.size(); i++) {
-            query += " or name LIKE" + "\"%" + ingredients.get(i) + "%\"";
+            query += " or name LIKE" + " \"%" + ingredients.get(i) + "%\"";
         }
         rs = stmt.executeQuery(query);
         while (rs.next())
@@ -62,13 +70,16 @@ class DatabaseAdapter {
     }
 
     void connectToDatabase() throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
+            state = "IN PROCESS";
             Class.forName("com.mysql.jdbc.Driver").newInstance();
             con = DriverManager.getConnection(url, user, password);
             stmt = con.createStatement();
+            state = "CONNECTED";
             Log.d(TAG, "Connection established");
     }
     void closeConnection() throws SQLException {
         con.close();
+        state = "NOT CONNECTED";
         Log.d(TAG, "Connection closed");
     }
 

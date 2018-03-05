@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -24,22 +25,21 @@ import java.util.List;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 
 public class IngredientActivity extends AppCompatActivity {
     MaterialSearchView searchView;
     DatabaseAdapter databaseAdapter;
     String TAG = "INGREDIENT ACTIVITY";
+    Boolean connected = false;
 
     List<String> ingredientsList = Arrays.asList(
-            "milk",
-            "eggs",
-            "flour",
-            "salt",
-            "sugar",
-            "cucumbers",
-            "tomatos",
-            "chicken",
-            "kefir"
+            "Молоко",
+            "Кефир",
+            "Яйца",
+            "Соль",
+            "Курица"
     );
     List<String> chosenIngredients = new ArrayList<String>();
     ListView lstView;
@@ -70,6 +70,7 @@ public class IngredientActivity extends AppCompatActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        connected = false;
     }
 
     @Override
@@ -77,8 +78,23 @@ public class IngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
         databaseAdapter = new DatabaseAdapter();
-        ConnectionToDatabase connectionToDatabase = new ConnectionToDatabase();
+        final ConnectionToDatabase connectionToDatabase = new ConnectionToDatabase();
         connectionToDatabase.execute();
+        if (databaseAdapter.getState().equals("CONNECTED")) {
+            connected = true;
+        }
+
+        try {
+            databaseAdapter.connectToDatabase();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -149,17 +165,55 @@ public class IngredientActivity extends AppCompatActivity {
         findRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    List<Recipe> recipes = databaseAdapter.getData(chosenIngredients);
-                    Log.d(TAG, recipes.get(0).getName());
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InstantiationException e) {
-                    e.printStackTrace();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                String databaseState = databaseAdapter.getState();
+                if (databaseState.equals("CONNECTED")){
+                    connected = true;
+                }
+                else{
+                    if (databaseState.equals("IN PROCESS")) {
+                        connected = false;
+                        Toast toast = Toast.makeText(IngredientActivity.this, "Loading...", LENGTH_LONG);
+                        while (databaseAdapter.getState().equals("IN PROCESS")){
+                            toast.show();
+                            try {
+                                wait(500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if (databaseAdapter.getState().equals("CONNECTED")){
+                            connected = true;
+                        }
+                    }
+                    else{
+                        connected = false;
+                        ConnectionToDatabase connectionToDatabase1 = new ConnectionToDatabase();
+                        int MAX_COUNT = 3;
+                        int count = 0;
+                        while (databaseAdapter.getState().equals("NOT CONNECTED") && count < MAX_COUNT){
+                            count += 1;
+                            connectionToDatabase.execute();
+                            if (databaseAdapter.getState().equals("CONNECTED")){
+                                connected = true;
+                            }
+                        }
+                    }
+                }
+                if (connected){
+                    try {
+                        List<Recipe> recipes = databaseAdapter.getData(chosenIngredients);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else {
+                    Log.d(TAG, "CAN'T CONNECT TO DATABASE");
                 }
                 Intent intent = new Intent(IngredientActivity.this, RecipesActivity.class);
                 intent.putStringArrayListExtra("chosen_ingredients", (ArrayList<String>) chosenIngredients);
