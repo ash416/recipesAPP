@@ -1,6 +1,7 @@
 package com.example.ash41.recipes;
 
 import android.content.ClipData;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
@@ -56,6 +58,15 @@ public class IngredientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mIngredientRecyclerView = findViewById(R.id.ingredient_recycler_view);
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(chosenIngredients);
+        Button findReceptButton = findViewById(R.id.find_recipes_by_ing_button);
+        findReceptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(IngredientActivity.this, RecipesActivity.class);
+                intent.putStringArrayListExtra("chosen_ingredients", (ArrayList<String>) chosenIngredients);
+                startActivity(intent);
+            }
+        });
         searchViewCode();
     }
 
