@@ -22,13 +22,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        /*final Button nameRecipesButton = (Button)findViewById(R.id.find_recipes_by_name);
+        final Button nameRecipesButton = (Button)findViewById(R.id.find_recipes_by_name);
         nameRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RecipesSearchActivity.class);
+                Intent intent = new Intent(MainActivity.this, RecipesNameSearchActivity.class);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 }
