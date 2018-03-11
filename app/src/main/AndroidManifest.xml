@@ -23,6 +23,7 @@
                   android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".RecipesActivity" />
         <activity android:name=".RecipeInfoActivity" />
+        <activity android:name=".RecipesNameSearchActivity"/>
     </application>
 
 </manifest>
