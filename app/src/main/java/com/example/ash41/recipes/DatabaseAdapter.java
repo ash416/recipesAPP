@@ -1,5 +1,7 @@
 package com.example.ash41.recipes;
 
+import android.util.Log;
+
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.sql.Connection;
@@ -14,11 +16,11 @@ class DatabaseAdapter {
     private static final String url = "jdbc:mysql://128.72.47.234:13826/db_recipes?useUnicode=true&characterEncoding=utf-8";
     private static final String user = "recipes_user";
     private static final String password = "15263A";
+    private static final String TAG = "DATABASE ADAPTER";
 
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
-
 
     private List<Integer> getIdRecipes(String[] ingredients) throws SQLException {
         String query = "select recipes_id from ingredients where ingredient_name = " + "\'" + ingredients[0].toLowerCase() + "\'";
@@ -47,12 +49,15 @@ class DatabaseAdapter {
     }
 
     void connectToDatabase() throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);
-            stmt = con.createStatement();
+        Log.d(TAG, "Connection to database: start");
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        con = DriverManager.getConnection(url, user, password);
+        stmt = con.createStatement();
+        Log.d(TAG, "Connection to database: established");
     }
     void closeConnection() throws SQLException {
         con.close();
+        Log.d(TAG, "Connection to database: closed");
     }
 
     Recipe getData(String recipeName) throws ClassNotFoundException,

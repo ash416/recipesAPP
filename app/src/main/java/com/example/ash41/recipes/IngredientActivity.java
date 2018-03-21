@@ -1,37 +1,21 @@
 package com.example.ash41.recipes;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
-import android.database.MatrixCursor;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.Filter;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public class IngredientActivity extends AppCompatActivity {
-    String TAG = "INGREDIENT ACTIVITY";
+    static final String TAG = "INGREDIENT ACTIVITY";
     static RecyclerView mIngredientRecyclerView;
     static IngredientRecyclerAdapter mIngredientRecyclerAdapter;
     SearchView mSearchView;
@@ -51,7 +35,7 @@ public class IngredientActivity extends AppCompatActivity {
     };
     List<String> mListOfChosenIngredients;
 
-//    @Override
+    @Override
     protected void onCreate(@org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
@@ -75,16 +59,19 @@ public class IngredientActivity extends AppCompatActivity {
 
         mSearchView = (SearchView) findViewById(R.id.search_view);
         final SearchView.SearchAutoComplete searchSrcTextView =(SearchView.SearchAutoComplete) findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchSrcTextView.setTextColor(Color.WHITE);
         searchSrcTextView.setThreshold(1);
         searchSrcTextView.setAdapter(new SuggestionAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, null));
         searchSrcTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, (String) parent.getItemAtPosition(position));
-                mListOfChosenIngredients.add((String) parent.getItemAtPosition(position));
-
+                String mChosenIngredient = (String) parent.getItemAtPosition(position);
+                if (!mListOfChosenIngredients.contains(mChosenIngredient)){
+                    mListOfChosenIngredients.add(mChosenIngredient);
+                }
                 showListOfChosenIngredients(mListOfChosenIngredients);
-                searchSrcTextView.clearComposingText();
+                searchSrcTextView.setText("");
                 return;
             }
         });
@@ -108,13 +95,17 @@ public class IngredientActivity extends AppCompatActivity {
                 return true;
             }
         });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchSrcTextView.setText("");
+                return false;
+            }
+        });
     }
-
     public static void showListOfChosenIngredients(List<String> mListOfChosenIngredients){
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mIngredientRecyclerView.setAdapter(mIngredientRecyclerAdapter);
+        Log.d(TAG, "Chosen ingredients: " + mListOfChosenIngredients.toString());
     }
-
-
-
 }

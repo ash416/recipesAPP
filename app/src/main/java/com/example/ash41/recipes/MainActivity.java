@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MAIN ACTIVITY";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +28,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+//        Log.d(TAG, "Connection to database: begins in background");
 //        ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
 //        connectionToDatabaseTask.execute();
+//        Log.d(TAG, "Connection to database: established in background");
         /*final Button nameRecipesButton = (Button)findViewById(R.id.find_recipes_by_name);
         nameRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
