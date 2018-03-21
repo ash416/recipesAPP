@@ -1,11 +1,17 @@
 package com.example.ash41.recipes;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+//        ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
+//        connectionToDatabaseTask.execute();
         /*final Button nameRecipesButton = (Button)findViewById(R.id.find_recipes_by_name);
         nameRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,4 +39,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
     }
-}
+    class ConnectionToDatabaseTask extends AsyncTask<Void, Void, Void >{
+        @Override
+        protected Void doInBackground(Void... voids) {
+            DatabaseAdapter mDatabaseAdapter =  new DatabaseAdapter();
+            try {
+                mDatabaseAdapter.connectToDatabase();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+};

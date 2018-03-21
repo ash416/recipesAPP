@@ -1,5 +1,7 @@
 package com.example.ash41.recipes;
 
+import android.util.Log;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,6 +18,7 @@ class DatabaseAdapter {
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
+    private static final String TAG = "DATABASE ADAPTER";
 
     private List<Integer> getIdIngredients(String[] ingredients) throws SQLException {
         List<Integer> id = new ArrayList<>();
@@ -58,12 +61,14 @@ class DatabaseAdapter {
     }
 
     void connectToDatabase() throws ClassNotFoundException, IllegalAccessException, InstantiationException, SQLException {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection(url, user, password);
-            stmt = con.createStatement();
+        Class.forName("com.mysql.jdbc.Driver").newInstance();
+        con = DriverManager.getConnection(url, user, password);
+        stmt = con.createStatement();
+        Log.d(TAG, "connection established");
     }
     void closeConnection() throws SQLException {
         con.close();
+        Log.d(TAG, "connection closed");
     }
 
     Recipe getData(String recipeName) throws ClassNotFoundException,
