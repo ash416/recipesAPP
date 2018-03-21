@@ -14,19 +14,24 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 
 public class RecipesActivity extends AppCompatActivity {
-
+    static final String TAG = "RECIPES ACTIVITY";
     RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
+
+        Intent intent = getIntent();
+        String[] mListOfChosenIngredients = intent.getStringArrayListExtra("chosen_ingredients").toArray(new String[0]);
+        Log.d(TAG, mListOfChosenIngredients.toString());
+
         DatabaseTask dataTask = new DatabaseTask();
-        String[] str = {"Грибы"};
-        dataTask.execute(str);
+        dataTask.execute(mListOfChosenIngredients);
     }
 
     class DatabaseTask extends AsyncTask<String, Void, ArrayList<Recipe> > {
@@ -35,6 +40,7 @@ public class RecipesActivity extends AppCompatActivity {
             ArrayList<Recipe> recipes = new ArrayList<>();
             DatabaseAdapter dbAdapter = new DatabaseAdapter();
             try {
+                dbAdapter.connectToDatabase();
                 recipes = dbAdapter.getData(ingredients);
                 Collections.sort(recipes, new Comparator<Recipe>() {
                     public int compare(Recipe rec1, Recipe rec2) {

@@ -46,16 +46,8 @@ public class RecipeInfoActivity extends AppCompatActivity {
             textViewIngr.append(getText(ingr));
         }
         Picasso.with(imageView.getContext()).load(image).into(imageView);
-
-        int position = description.indexOf("\'");
-        String finalDescription = "";
-        while(position >= 0){
-            int nextPosition = description.indexOf("\'", position + 1);
-            finalDescription += description.substring(position + 1, nextPosition) + " ";
-            position = description.indexOf("\'", nextPosition + 1);
-        }
         TextView textViewDescr = findViewById(R.id.textViewDesc);
-        textViewDescr.setText(finalDescription);
+        textViewDescr.setText(description);
     }
 
     private Spannable getText(String ingredient){

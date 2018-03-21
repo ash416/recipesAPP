@@ -8,30 +8,39 @@
     tools:context=".IngredientActivity">
     <!-- tools:context="com.example.ash41.recipes.IngredientActivity"-->
 
-    <FrameLayout
-        android:id="@+id/toolbar_container"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay" />
+
+    <!--<com.miguelcatalan.materialsearchview.MaterialSearchView-->
+        <!--android:id="@+id/search_view"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:layout_below="@+id/toolbar"-->
+        <!--android:visibility="visible" />-->
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-        
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:theme="@style/AppTheme.AppBarOverlay"/>
+        android:text="@string/search"
+        android:textColor="@color/white"
+        android:layout_below="@+id/toolbar"
+        android:background="@color/colorPrimary"
+        android:layout_centerVertical="true"
+        app:searchIcon="@drawable/ic_action_action_search"
+        app:closeIcon="@drawable/ic_action_navigation_close_inverted"
 
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </FrameLayout>
+        />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredient_recycler_view"
         app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@+id/toolbar_container"
+        android:layout_height="350dp"
+        android:layout_below="@+id/search_view"
         >
     </android.support.v7.widget.RecyclerView>
 

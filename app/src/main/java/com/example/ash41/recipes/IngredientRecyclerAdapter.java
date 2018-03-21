@@ -44,7 +44,7 @@ public class IngredientRecyclerAdapter extends RecyclerView.Adapter<IngredientRe
                         int position = getLayoutPosition();
                         Log.d(TAG, ingredients.get(position));
                         ingredients.remove(ingredients.get(position));
-                        //IngredientActivity.showChosenIngredients(ingredients);
+                        IngredientActivity.showListOfChosenIngredients(ingredients);
                     }
                 }
             });
