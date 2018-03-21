@@ -31,6 +31,8 @@
         android:background="@color/colorPrimary"
         android:layout_centerVertical="true"
         app:searchIcon="@drawable/ic_action_action_search"
+        app:closeIcon="@drawable/ic_action_navigation_close_inverted"
+
         />
 
     <android.support.v7.widget.RecyclerView
