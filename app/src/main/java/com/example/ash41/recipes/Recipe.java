@@ -38,7 +38,7 @@ public class Recipe {
         this.ingredients = ingredients;
         this.description = description;
     }
-    public void setHaveIngredients(String[] haveIngredients){ this.haveIngredients = haveIngredients; }
+    public void setHaveIngredients(String[] haveIngredients){this.haveIngredients = haveIngredients;}
     public String[] getHaveIngredients() {return this.haveIngredients; }
     public String getDescription(){ return this.description; }
     public void setDescription(String description) { this.description = description; }

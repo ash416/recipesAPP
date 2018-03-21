@@ -14,7 +14,7 @@ import java.util.List;
 
 class DatabaseAdapter {
     private static final String url = "jdbc:mysql://128.72.47.234:13826/db_recipes?useUnicode=true&characterEncoding=utf-8";
-    private static final String user = "recipes_user";
+    private static final String user = "root";
     private static final String password = "15263A";
     private static final String TAG = "DATABASE ADAPTER";
 
@@ -65,13 +65,13 @@ class DatabaseAdapter {
                                                 InstantiationException,
                                                 SQLException {
         Recipe recipe = null;
-        connectToDatabase();
+        //connectToDatabase();
         String query = "SELECT DISTINCT `Name`, `Description`, `Image`, `Ingredients` from recipes where Name=" + "\'" + recipeName + "\'";
         rs = stmt.executeQuery(query);
         while (rs.next()) {
             recipe = getRecipe();
         }
-        closeConnection();
+        //closeConnection();
         return recipe;
     }
 
@@ -94,6 +94,17 @@ class DatabaseAdapter {
         }
         // closeConnection();
 
+        return recipes;
+    }
+    ArrayList<Recipe> getData() throws SQLException {
+        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+        String query = "SELECT DISTINCT `name`, `image`, `recipe`, `ingredients` from recipes";
+        rs = stmt.executeQuery(query);
+        while (rs.next()) {
+            Recipe recipe = getRecipe();
+            recipe.setHaveIngredients(new String[]{});
+            recipes.add(recipe);
+        }
         return recipes;
     }
 }

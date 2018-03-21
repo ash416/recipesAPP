@@ -86,7 +86,7 @@ public class IngredientActivity extends AppCompatActivity {
                 List<String> foundIngredients = new ArrayList<String>();
                 if (!newText.isEmpty() && newText != null){
                     for (String ingredient : ingredients){
-                        if (ingredient.indexOf(newText) == 0){
+                        if (ingredient.toLowerCase().indexOf(newText.toLowerCase()) == 0){
                             foundIngredients.add(ingredient);
                         }
                     }

@@ -1,49 +1,55 @@
 package com.example.ash41.recipes;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.View;
-import android.widget.AdapterView;
-
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import static com.example.ash41.recipes.IngredientActivity.mIngredientRecyclerAdapter;
 
 public class RecipesNameSearchActivity extends AppCompatActivity {
-    RecyclerView mRecyclerView;
+
+    public RecyclerView mRecipesRecyclerView;
     Toolbar toolbar;
-    MaterialSearchView materialSearchView;
-    String[] ingredients = new String[]{
-            "Молоко",
-            "Курица",
-            "Грибы",
-            "Яблоки",
-            "Шоколад",
-            "Кефир",
-            "Кумыс",
-            "chicken",
-            "cucumbers",
-            "milk",
-            "butter"
-    };
+    SearchView mSearchView;
+    List<Recipe> mRecipesList;
+    private static final String TAG = "RECIPE NAME SEARCH";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipes);
+        setContentView(R.layout.activity_recipes_name_search);
+
         DatabaseTask dataTask = new DatabaseTask();
-        dataTask.execute(ingredients);
+        try {
+            mRecipesList = dataTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
         toolbar = findViewById(R.id.toolbar_name_search);
         setSupportActionBar(toolbar);
-        materialSearchView = findViewById(R.id.name_search_view);
-        materialSearchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+
+        mRecipesRecyclerView = findViewById(R.id.recipes_recycler_view);
+
+        mSearchView = (SearchView) findViewById(R.id.recipes_search_view);
+        final SearchView.SearchAutoComplete searchSrcTextView =(SearchView.SearchAutoComplete) findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchSrcTextView.setTextColor(Color.WHITE);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -51,22 +57,43 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
+                List<Recipe> foundRecipes = new ArrayList<>();
+                if (!newText.isEmpty() && newText != null){
+                    for (Recipe recipe : mRecipesList){
+                        if (recipe.getName().toLowerCase().indexOf(newText.toLowerCase()) == 0){
+                            foundRecipes.add(recipe);
+                        }
+                    }
+                }
+                else{
+                    foundRecipes = mRecipesList;
+                }
+                RecyclerAdapter mRecyclerAdapter = new RecyclerAdapter(foundRecipes);
+                mRecyclerAdapter.setNameSearchFlag(true);
+                mRecipesRecyclerView.setAdapter(mRecyclerAdapter);
+                return true;
+            }
+        });
+        mSearchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                searchSrcTextView.setText("");
                 return false;
             }
         });
     }
 
-    class DatabaseTask extends AsyncTask<String, Void, ArrayList<Recipe> > {
+    class DatabaseTask extends AsyncTask<Void, Void, ArrayList<Recipe> > {
         @Override
-        protected ArrayList<Recipe> doInBackground(String... ingredients) {
-            ArrayList<Recipe> recipes = new ArrayList<>();
-            DatabaseAdapter dbAdapter = new DatabaseAdapter();
+        protected ArrayList<Recipe> doInBackground(Void... voids) {
+            DatabaseAdapter mDatabaseAdapter = new DatabaseAdapter();
+            ArrayList<Recipe> recipes = new ArrayList<Recipe>();
             try {
-                recipes = dbAdapter.getData(ingredients);
+                mDatabaseAdapter.connectToDatabase();
+                recipes = mDatabaseAdapter.getData();
                 Collections.sort(recipes, new Comparator<Recipe>() {
                     public int compare(Recipe rec1, Recipe rec2) {
-                        return rec1.compareTo(rec2);
+                        return rec1.getName().compareTo(rec2.getName());
                     }
                 });
             } catch (ClassNotFoundException e) {
@@ -83,10 +110,11 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Recipe> result) {
-            mRecyclerView = findViewById(R.id.recipes_recycler_view);
-            mRecyclerView.setHasFixedSize(true);
-            RecyclerView.Adapter mAdapter = new RecyclerAdapter(result);
-            mRecyclerView.setAdapter(mAdapter);
+            mRecipesRecyclerView = (RecyclerView) findViewById(R.id.recipes_recycler_view);
+            mRecipesRecyclerView.setHasFixedSize(true);
+            RecyclerAdapter mRecyclerAdapter = new RecyclerAdapter(result);
+            mRecyclerAdapter.setNameSearchFlag(true);
+            mRecipesRecyclerView.setAdapter(mRecyclerAdapter);
         }
     }
 }

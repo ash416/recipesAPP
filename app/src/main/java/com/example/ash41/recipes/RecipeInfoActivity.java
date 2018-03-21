@@ -52,12 +52,15 @@ public class RecipeInfoActivity extends AppCompatActivity {
 
     private Spannable getText(String ingredient){
         Spannable text = new SpannableString(ingredient + "\n");
-        for(String haveIngr: haveIngredients) {
-            if (ingredient.toLowerCase().contains(haveIngr.toLowerCase())) {
-                return text;
+        if (haveIngredients.length != 0) {
+            for (String haveIngr : haveIngredients) {
+                if (ingredient.toLowerCase().contains(haveIngr.toLowerCase())) {
+                    return text;
+                }
             }
+            text.setSpan(new ForegroundColorSpan(Color.RED), 0, ingredient.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return text;
         }
-        text.setSpan(new ForegroundColorSpan(Color.RED), 0, ingredient.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return text;
     }
 }
