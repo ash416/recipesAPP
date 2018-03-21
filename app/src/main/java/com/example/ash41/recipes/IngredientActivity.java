@@ -36,7 +36,7 @@ public class IngredientActivity extends AppCompatActivity {
     List<String> mListOfChosenIngredients;
 
     @Override
-    protected void onCreate(@org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
 
