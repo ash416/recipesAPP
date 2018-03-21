@@ -20,25 +20,15 @@ public class IngredientActivity extends AppCompatActivity {
     static IngredientRecyclerAdapter mIngredientRecyclerAdapter;
     SearchView mSearchView;
     Toolbar toolbar;
-    String[] ingredients = new String[]{
-            "Молоко",
-            "Курица",
-            "Грибы",
-            "Яблоки",
-            "Шоколад",
-            "Кефир",
-            "Кумыс",
-            "chicken",
-            "cucumbers",
-            "milk",
-            "butter"
-    };
+    String[] ingredients;;
     List<String> mListOfChosenIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
+
+        ingredients  = getResources().getStringArray(R.array.ingredients_array);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
