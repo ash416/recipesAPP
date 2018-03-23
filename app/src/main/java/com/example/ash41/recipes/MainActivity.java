@@ -15,6 +15,7 @@ import java.util.Comparator;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MAIN ACTIVITY";
+    public static DatabaseAdapter mDatabaseAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-//        Log.d(TAG, "Connection to database: begins in background");
-//        ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
-//        connectionToDatabaseTask.execute();
-//        Log.d(TAG, "Connection to database: established in background");
+        Log.d(TAG, "Connection to database: begins in background");
+        ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
+        connectionToDatabaseTask.execute();
+        Log.d(TAG, "Connection to database: established in background");
         final Button nameRecipesButton = (Button)findViewById(R.id.find_recipes_by_name);
         nameRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     class ConnectionToDatabaseTask extends AsyncTask<Void, Void, Void >{
         @Override
         protected Void doInBackground(Void... voids) {
-            DatabaseAdapter mDatabaseAdapter =  new DatabaseAdapter();
+            mDatabaseAdapter =  new DatabaseAdapter();
             try {
                 mDatabaseAdapter.connectToDatabase();
             } catch (ClassNotFoundException e) {

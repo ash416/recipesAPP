@@ -2,8 +2,6 @@ package com.example.ash41.recipes;
 
 import android.util.Log;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,6 +19,7 @@ class DatabaseAdapter {
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
+    private boolean isConnected;
 
     private List<Integer> getIdRecipes(String[] ingredients) throws SQLException {
         String query = "select recipes_id from ingredients where ingredient_name = " + "\'" + ingredients[0].toLowerCase() + "\'";
@@ -53,10 +52,12 @@ class DatabaseAdapter {
         Class.forName("com.mysql.jdbc.Driver").newInstance();
         con = DriverManager.getConnection(url, user, password);
         stmt = con.createStatement();
+        isConnected = true;
         Log.d(TAG, "Connection to database: established");
     }
     void closeConnection() throws SQLException {
         con.close();
+        isConnected = false;
         Log.d(TAG, "Connection to database: closed");
     }
 
@@ -76,27 +77,35 @@ class DatabaseAdapter {
     }
 
     ArrayList<Recipe> getData(String[] ingredients) throws ClassNotFoundException,
-                                                            SQLException,
-                                                            InstantiationException,
-                                                            IllegalAccessException {
+            SQLException,
+            InstantiationException,
+            IllegalAccessException, InterruptedException {
+        while (!isConnected){
+            wait(500);
+        }
         ArrayList<Recipe> recipes = new ArrayList<>();
-        //connectToDatabase();
-        List<Integer> recipesId = getIdRecipes(ingredients);
-        String query = "SELECT DISTINCT `name`, `image`, `recipe`, `ingredients` from recipes where id=" + recipesId.get(0);
-        for (int i = 1; i < recipesId.size(); i++) {
-            query += " or id=" + recipesId.get(i);
+        if (ingredients.length > 0){
+            List<Integer> recipesId = getIdRecipes(ingredients);
+            String query = "SELECT DISTINCT `name`, `image`, `recipe`, `ingredients` from recipes where id=" + recipesId.get(0);
+            for (int i = 1; i < recipesId.size(); i++) {
+                query += " or id=" + recipesId.get(i);
+            }
+            rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Recipe recipe = getRecipe();
+                recipe.setHaveIngredients(ingredients);
+                recipes.add(recipe);
+            }
         }
-        rs = stmt.executeQuery(query);
-        while (rs.next()) {
-            Recipe recipe = getRecipe();
-            recipe.setHaveIngredients(ingredients);
-            recipes.add(recipe);
+        else{
+            recipes = getData();
         }
-        // closeConnection();
-
         return recipes;
     }
-    ArrayList<Recipe> getData() throws SQLException {
+    ArrayList<Recipe> getData() throws SQLException, InterruptedException {
+        while (!isConnected){
+            wait(500);
+        }
         ArrayList<Recipe> recipes = new ArrayList<Recipe>();
         String query = "SELECT DISTINCT `name`, `image`, `recipe`, `ingredients` from recipes";
         rs = stmt.executeQuery(query);
@@ -106,5 +115,9 @@ class DatabaseAdapter {
             recipes.add(recipe);
         }
         return recipes;
+    }
+
+    public boolean isConnected() {
+        return isConnected;
     }
 }

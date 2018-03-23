@@ -7,18 +7,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.widget.Toast;
+
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-
-import static com.example.ash41.recipes.IngredientActivity.mIngredientRecyclerAdapter;
 
 public class RecipesNameSearchActivity extends AppCompatActivity {
 
@@ -86,23 +82,18 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
     class DatabaseTask extends AsyncTask<Void, Void, ArrayList<Recipe> > {
         @Override
         protected ArrayList<Recipe> doInBackground(Void... voids) {
-            DatabaseAdapter mDatabaseAdapter = new DatabaseAdapter();
+            //DatabaseAdapter mDatabaseAdapter = new DatabaseAdapter();
             ArrayList<Recipe> recipes = new ArrayList<Recipe>();
             try {
-                mDatabaseAdapter.connectToDatabase();
-                recipes = mDatabaseAdapter.getData();
+                recipes = MainActivity.mDatabaseAdapter.getData();
                 Collections.sort(recipes, new Comparator<Recipe>() {
                     public int compare(Recipe rec1, Recipe rec2) {
                         return rec1.getName().compareTo(rec2.getName());
                     }
                 });
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
             } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return recipes;

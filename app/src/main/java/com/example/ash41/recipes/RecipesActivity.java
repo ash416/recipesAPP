@@ -1,20 +1,16 @@
 package com.example.ash41.recipes;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 
 public class RecipesActivity extends AppCompatActivity {
@@ -38,10 +34,8 @@ public class RecipesActivity extends AppCompatActivity {
         @Override
         protected ArrayList<Recipe> doInBackground(String... ingredients) {
             ArrayList<Recipe> recipes = new ArrayList<>();
-            DatabaseAdapter dbAdapter = new DatabaseAdapter();
             try {
-                dbAdapter.connectToDatabase();
-                recipes = dbAdapter.getData(ingredients);
+                recipes = MainActivity.mDatabaseAdapter.getData(ingredients);
                 Collections.sort(recipes, new Comparator<Recipe>() {
                     public int compare(Recipe rec1, Recipe rec2) {
                         return rec1.compareTo(rec2);
@@ -54,6 +48,8 @@ public class RecipesActivity extends AppCompatActivity {
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             return recipes;
