@@ -5,14 +5,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".IngredientActivity">
+    tools:context=".IngredientActivity"
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay" />
+        android:theme="@style/AppTheme.AppBarOverlay"
+        />
 
     <android.support.v7.widget.SearchView
         android:id="@+id/search_view"
@@ -24,7 +26,8 @@
         android:background="@color/colorPrimary"
         android:layout_centerVertical="true"
         app:searchIcon="@drawable/ic_action_action_search"
-        app:closeIcon="@drawable/ic_action_navigation_close_inverted" />
+        app:closeIcon="@drawable/ic_action_navigation_close_inverted"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredient_recycler_view"
@@ -38,12 +41,14 @@
         android:id="@+id/find_recipes_by_ing_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ingredient_recycler_view"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
         android:gravity="center"
-        android:layout_margin="20dp"
-        android:text="@string/find_recipe" />
+        android:text="@string/find_recipe"
+        android:background="@color/green"/>
 
 
 </RelativeLayout>
