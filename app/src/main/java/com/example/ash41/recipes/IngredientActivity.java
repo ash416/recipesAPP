@@ -49,7 +49,8 @@ public class IngredientActivity extends AppCompatActivity {
 
         mSearchView = (SearchView) findViewById(R.id.search_view);
         final SearchView.SearchAutoComplete searchSrcTextView =(SearchView.SearchAutoComplete) findViewById(android.support.v7.appcompat.R.id.search_src_text);
-        searchSrcTextView.setTextColor(Color.WHITE);
+        searchSrcTextView.setHintTextColor(getResources().getColor(R.color.grey));
+        searchSrcTextView.setHint(getResources().getString(R.string.search_hint));
         searchSrcTextView.setThreshold(1);
         searchSrcTextView.setAdapter(new SuggestionAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, null));
         searchSrcTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

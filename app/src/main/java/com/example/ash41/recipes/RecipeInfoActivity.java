@@ -58,7 +58,7 @@ public class RecipeInfoActivity extends AppCompatActivity {
                     return text;
                 }
             }
-            text.setSpan(new ForegroundColorSpan(Color.RED), 0, ingredient.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            text.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.red)), 0, ingredient.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
             return text;
         }
         return text;

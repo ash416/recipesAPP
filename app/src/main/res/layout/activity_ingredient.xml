@@ -21,9 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/search"
-        android:textColor="@color/white"
+        android:textColor="#000000"
+        android:background="@color/green"
         android:layout_below="@+id/toolbar"
-        android:background="@color/colorPrimary"
         android:layout_centerVertical="true"
         app:searchIcon="@drawable/ic_action_action_search"
         app:closeIcon="@drawable/ic_action_navigation_close_inverted"
@@ -33,7 +33,7 @@
         android:id="@+id/ingredient_recycler_view"
         app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="400dp"
         android:layout_below="@+id/search_view"
         />
 
