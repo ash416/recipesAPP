@@ -13,9 +13,9 @@ import java.util.List;
 
 
 public class IngredientRecyclerAdapter extends RecyclerView.Adapter<IngredientRecyclerAdapter.ViewHolder>{
-    public List<String> ingredients;
-    String TAG = "INGREDIENT RECYCLER ADAPTER";
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private List<String> ingredients;
+    private String TAG = "INGREDIENT RECYCLER ADAPTER";
+    class ViewHolder extends RecyclerView.ViewHolder {
         final TextView ingredientName;
         final CheckBox ingredientCheckbox;
         ViewHolder(View view) {
@@ -33,11 +33,6 @@ public class IngredientRecyclerAdapter extends RecyclerView.Adapter<IngredientRe
                     }
                 }
             });
-            view.setOnClickListener(this);
-        }
-
-        public void onClick(View view){
-            int position = getLayoutPosition();
         }
     }
 
