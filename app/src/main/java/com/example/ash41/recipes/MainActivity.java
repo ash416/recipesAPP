@@ -15,15 +15,16 @@ import java.sql.SQLException;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MAIN ACTIVITY";
     public static DatabaseAdapter mDatabaseAdapter;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+    private void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         TextView mTitle = toolbar.findViewById(R.id.toolbar_title_main);
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    private void setButtons(){
         final Button ingredientsRecipesButton = findViewById(R.id.find_recipes_by_ing);
         ingredientsRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -33,10 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        Log.d(TAG, "Connection to database: begins in background");
-        ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
-        connectionToDatabaseTask.execute();
-        Log.d(TAG, "Connection to database: established in background");
+
         final Button nameRecipesButton = findViewById(R.id.find_recipes_by_name);
         nameRecipesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +43,20 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        setToolbar();
+        setButtons();
+
+        Log.d(TAG, "Connection to database: begins in background");
+        ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
+        connectionToDatabaseTask.execute();
+        Log.d(TAG, "Connection to database: established in background");
+
     }
     class ConnectionToDatabaseTask extends AsyncTask<Void, Void, Void >{
         @Override
