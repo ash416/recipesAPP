@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 import java.sql.SQLException;
@@ -18,32 +21,31 @@ import java.util.concurrent.ExecutionException;
 
 public class RecipesNameSearchActivity extends AppCompatActivity {
 
-    public RecyclerView mRecipesRecyclerView;
-    Toolbar toolbar;
-    SearchView mSearchView;
-    List<Recipe> mRecipesList;
+    private RecyclerView mRecipesRecyclerView;
+    private List<Recipe> mRecipesList;
     private static final String TAG = "RECIPE NAME SEARCH";
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipes_name_search);
 
-        DatabaseTask dataTask = new DatabaseTask();
-        try {
-            mRecipesList = dataTask.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        toolbar = findViewById(R.id.toolbar_name_search);
+    private void setToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar_name_search);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title_recipe_name_search);
         setSupportActionBar(toolbar);
+        mTitle.setText(toolbar.getTitle());
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
 
-        mRecipesRecyclerView = findViewById(R.id.recipes_recycler_view);
+    private void setButtons(){
+        Button backButton = findViewById(R.id.button_back_recipe_name_search);
+        backButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                finish();
+            }
+        });
+    }
 
-        mSearchView = (SearchView) findViewById(R.id.recipes_search_view);
-        final SearchView.SearchAutoComplete searchSrcTextView =(SearchView.SearchAutoComplete) findViewById(android.support.v7.appcompat.R.id.search_src_text);
+    private void setSearchView(){
+        SearchView mSearchView = findViewById(R.id.recipes_search_view);
+        final SearchView.SearchAutoComplete searchSrcTextView = findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchSrcTextView.setTextColor(Color.WHITE);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -78,12 +80,30 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recipes_name_search);
+        setToolbar();
+        setButtons();
+
+        DatabaseTask dataTask = new DatabaseTask();
+        try {
+            mRecipesList = dataTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        mRecipesRecyclerView = findViewById(R.id.recipes_recycler_view);
+        setSearchView();
+    }
 
     class DatabaseTask extends AsyncTask<Void, Void, ArrayList<Recipe> > {
         @Override
         protected ArrayList<Recipe> doInBackground(Void... voids) {
-            //DatabaseAdapter mDatabaseAdapter = new DatabaseAdapter();
-            ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+            ArrayList<Recipe> recipes = new ArrayList<>();
             try {
                 recipes = MainActivity.mDatabaseAdapter.getData();
                 Collections.sort(recipes, new Comparator<Recipe>() {
@@ -101,7 +121,7 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Recipe> result) {
-            mRecipesRecyclerView = (RecyclerView) findViewById(R.id.recipes_recycler_view);
+            mRecipesRecyclerView = findViewById(R.id.recipes_recycler_view);
             mRecipesRecyclerView.setHasFixedSize(true);
             RecyclerAdapter mRecyclerAdapter = new RecyclerAdapter(result);
             mRecyclerAdapter.setNameSearchFlag(true);

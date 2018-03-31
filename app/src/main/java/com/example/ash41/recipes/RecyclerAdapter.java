@@ -67,7 +67,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     public int getItemCount(){
         return recipes.size();
     }
-    public void setNameSearchFlag(boolean fl){
+    void setNameSearchFlag(boolean fl){
         this.ifNameSearch = fl;
     }
 }

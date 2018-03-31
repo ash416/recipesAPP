@@ -5,7 +5,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,10 +21,30 @@ public class RecipesActivity extends AppCompatActivity {
     static final String TAG = "RECIPES ACTIVITY";
     RecyclerView mRecyclerView;
 
+    private void setToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar_recipes);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title_recipe);
+        setSupportActionBar(toolbar);
+        mTitle.setText(toolbar.getTitle());
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    private void setButtons(){
+        Button backButton = findViewById(R.id.button_back_recipe);
+        backButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                finish();
+            }
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
+        setToolbar();
+        setButtons();
 
         Intent intent = getIntent();
         String[] mListOfChosenIngredients = intent.getStringArrayListExtra("chosen_ingredients").toArray(new String[0]);

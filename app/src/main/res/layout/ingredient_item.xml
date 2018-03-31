@@ -32,12 +32,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_weight="9"
                 android:layout_marginStart="20dp" />
+
             <CheckBox
                 android:id="@+id/ingredient_checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:checked="true"/>
+                android:button="@android:drawable/btn_dialog"
+                android:checked="true" />
         </LinearLayout>
 
 

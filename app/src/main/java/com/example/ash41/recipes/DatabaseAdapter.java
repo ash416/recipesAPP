@@ -55,25 +55,11 @@ class DatabaseAdapter {
         isConnected = true;
         Log.d(TAG, "Connection to database: established");
     }
+
     void closeConnection() throws SQLException {
         con.close();
         isConnected = false;
         Log.d(TAG, "Connection to database: closed");
-    }
-
-    Recipe getData(String recipeName) throws ClassNotFoundException,
-                                                IllegalAccessException,
-                                                InstantiationException,
-                                                SQLException {
-        Recipe recipe = null;
-        //connectToDatabase();
-        String query = "SELECT DISTINCT `Name`, `Description`, `Image`, `Ingredients` from recipes where Name=" + "\'" + recipeName + "\'";
-        rs = stmt.executeQuery(query);
-        while (rs.next()) {
-            recipe = getRecipe();
-        }
-        //closeConnection();
-        return recipe;
     }
 
     ArrayList<Recipe> getData(String[] ingredients) throws ClassNotFoundException,
