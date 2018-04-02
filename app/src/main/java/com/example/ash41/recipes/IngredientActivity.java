@@ -1,5 +1,9 @@
 package com.example.ash41.recipes;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -19,14 +23,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class IngredientActivity extends AppCompatActivity {
     static final String TAG = "INGREDIENT ACTIVITY";
     private static RecyclerView mIngredientRecyclerView;
     private static IngredientRecyclerAdapter mIngredientRecyclerAdapter;
-    private String[] ingredients;;
+    private List<String> ingredients;;
     private List<String> mListOfChosenIngredients;
 
+    @SuppressLint("RestrictedApi")
     private void setSearchView(){
         SearchView mSearchView = findViewById(R.id.search_view);
         final SearchView.SearchAutoComplete searchSrcTextView = findViewById(android.support.v7.appcompat.R.id.search_src_text);
@@ -100,6 +106,7 @@ public class IngredientActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
     @Override
@@ -107,10 +114,21 @@ public class IngredientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
         DatabaseTask databaseTask = new DatabaseTask();
-        databaseTask.execute();
+        DialogFragment dialogFragment = new AlertDialogWindow();
+        dialogFragment.show(getFragmentManager(), "dlg");
+        try {
+            ingredients = databaseTask.execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
+            if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
+                MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                //DialogFragment dialogFragment = new AlertDialogWindow();
+            }
+        }
         setButtons();
         setToolbar();
-        ingredients  = getResources().getStringArray(R.array.ingredients_array);
         mIngredientRecyclerView = findViewById(R.id.ingredient_recycler_view);
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mListOfChosenIngredients = new ArrayList<>();
@@ -120,7 +138,6 @@ public class IngredientActivity extends AppCompatActivity {
     public static void showListOfChosenIngredients(List<String> mListOfChosenIngredients){
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mIngredientRecyclerView.setAdapter(mIngredientRecyclerAdapter);
-        Log.d(TAG, "Chosen ingredients: " + mListOfChosenIngredients.toString());
     }
     class DatabaseTask extends AsyncTask<Void, Void, ArrayList<String> > {
         @Override

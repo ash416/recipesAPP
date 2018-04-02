@@ -15,11 +15,18 @@ class DatabaseAdapter {
     private static final String user = "root";
     private static final String password = "15263A";
     private static final String TAG = "DATABASE ADAPTER";
+    public int MAX_CONNECTION_COUNT = 3;
 
     private static Connection con;
     private static Statement stmt;
     private static ResultSet rs;
     private boolean isConnected;
+    private int ConnectionCounter;
+
+    DatabaseAdapter(){
+        this.isConnected = false;
+        this.ConnectionCounter = 0;
+    }
 
     private List<Integer> getIdRecipes(String[] ingredients) throws SQLException {
         String query = "select recipes_id from ingredients where ingredient_name = " + "\'" + ingredients[0].toLowerCase() + "\'";
@@ -110,11 +117,20 @@ class DatabaseAdapter {
         String query = "select `ingredient_name` from ingredients";
         rs = stmt.executeQuery(query);
         Log.d(TAG, "ok");
-        Log.d(TAG, rs.getString("ingredient_name"));
+        while (rs.next()) {
+            ingredients.add(rs.getString("ingredient_name"));
+        }
         return ingredients;
     }
 
     public boolean isConnected() {
         return isConnected;
+    }
+
+    public int getConnectionCounter() {
+        return ConnectionCounter;
+    }
+    public void setConnectionCounter(int connectionCounter) {
+        ConnectionCounter = connectionCounter;
     }
 }
