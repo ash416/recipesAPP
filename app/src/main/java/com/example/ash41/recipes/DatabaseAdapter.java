@@ -102,6 +102,17 @@ class DatabaseAdapter {
         }
         return recipes;
     }
+    ArrayList<String> getIngredients() throws SQLException, InterruptedException {
+        while (!isConnected){
+            wait(500);
+        }
+        ArrayList<String> ingredients = new ArrayList<String>();
+        String query = "select `ingredient_name` from ingredients";
+        rs = stmt.executeQuery(query);
+        Log.d(TAG, "ok");
+        Log.d(TAG, rs.getString("ingredient_name"));
+        return ingredients;
+    }
 
     public boolean isConnected() {
         return isConnected;

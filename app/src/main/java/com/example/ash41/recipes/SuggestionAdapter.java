@@ -46,8 +46,6 @@ public class SuggestionAdapter<T> extends ArrayAdapter<T> {
         @Override
         protected FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
-
-            //custom-filtering of results
             results.values = items;
             results.count = items.size();
 

@@ -2,6 +2,7 @@ package com.example.ash41.recipes;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +14,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class IngredientActivity extends AppCompatActivity {
@@ -102,6 +106,8 @@ public class IngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
+        DatabaseTask databaseTask = new DatabaseTask();
+        databaseTask.execute();
         setButtons();
         setToolbar();
         ingredients  = getResources().getStringArray(R.array.ingredients_array);
@@ -115,5 +121,24 @@ public class IngredientActivity extends AppCompatActivity {
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mIngredientRecyclerView.setAdapter(mIngredientRecyclerAdapter);
         Log.d(TAG, "Chosen ingredients: " + mListOfChosenIngredients.toString());
+    }
+    class DatabaseTask extends AsyncTask<Void, Void, ArrayList<String> > {
+        @Override
+        protected ArrayList<String> doInBackground(Void... voids) {
+            ArrayList<String> ingredients = new ArrayList<>();
+            try {
+                ingredients = MainActivity.mDatabaseAdapter.getIngredients();
+                Collections.sort(ingredients, new Comparator<String>() {
+                    public int compare(String ing1, String ing2) {
+                        return ing1.compareTo(ing2);
+                    }
+                });
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return ingredients;
+        }
     }
 }
