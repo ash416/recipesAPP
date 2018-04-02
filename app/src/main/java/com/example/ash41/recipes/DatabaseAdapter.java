@@ -15,7 +15,7 @@ class DatabaseAdapter {
     private static final String user = "root";
     private static final String password = "15263A";
     private static final String TAG = "DATABASE ADAPTER";
-    public int MAX_CONNECTION_COUNT = 3;
+    public int MAX_CONNECTION_COUNT = 5;
 
     private static Connection con;
     private static Statement stmt;
@@ -96,8 +96,9 @@ class DatabaseAdapter {
 
     ArrayList<Recipe> getData(String[] ingredients) throws DatabaseAdapterSQLException {
         try{
-            while (!isConnected){
+            while (!isConnected && ConnectionCounter < MAX_CONNECTION_COUNT){
                 wait(500);
+                ConnectionCounter += 1;
             }
         }catch (InterruptedException ex){
             ex.printStackTrace();
@@ -127,8 +128,9 @@ class DatabaseAdapter {
     }
     ArrayList<Recipe> getData() throws DatabaseAdapterSQLException {
         try{
-            while (!isConnected){
+            while (!isConnected && ConnectionCounter < MAX_CONNECTION_COUNT){
                 wait(500);
+                ConnectionCounter += 1;
             }
         }catch (InterruptedException ex){
             ex.printStackTrace();
@@ -149,8 +151,9 @@ class DatabaseAdapter {
     }
     ArrayList<String> getIngredients() throws DatabaseAdapterSQLException {
         try{
-            while (!isConnected){
+            while (!isConnected && ConnectionCounter < MAX_CONNECTION_COUNT){
                 wait(500);
+                ConnectionCounter += 1;
             }
         }catch (InterruptedException ex){
             ex.printStackTrace();
