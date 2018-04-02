@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.sql.SQLException;
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setToolbar();
         setButtons();
-
+        ImageView imageView = (ImageView) findViewById(R.id.logo);
+        imageView.setImageResource(R.drawable.recipe);
         Log.d(TAG, "Connection to database: begins in background");
         ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
         connectionToDatabaseTask.execute();

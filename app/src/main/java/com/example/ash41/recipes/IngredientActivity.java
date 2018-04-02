@@ -99,14 +99,6 @@ public class IngredientActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        final Button backButton = findViewById(R.id.button_back_ingredient);
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
-
     }
 
     @Override
@@ -129,6 +121,7 @@ public class IngredientActivity extends AppCompatActivity {
         }
         setButtons();
         setToolbar();
+        ingredients  = getResources().getStringArray(R.array.ingredients_array);
         mIngredientRecyclerView = findViewById(R.id.ingredient_recycler_view);
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mListOfChosenIngredients = new ArrayList<>();
@@ -138,6 +131,7 @@ public class IngredientActivity extends AppCompatActivity {
     public static void showListOfChosenIngredients(List<String> mListOfChosenIngredients){
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mIngredientRecyclerView.setAdapter(mIngredientRecyclerAdapter);
+        Log.d(TAG, "Chosen ingredients: " + mListOfChosenIngredients.toString());
     }
     class DatabaseTask extends AsyncTask<Void, Void, ArrayList<String> > {
         @Override

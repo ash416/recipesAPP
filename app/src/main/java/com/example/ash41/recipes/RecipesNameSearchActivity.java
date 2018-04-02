@@ -31,13 +31,11 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 
-    private void setButtons(){
-        Button backButton = findViewById(R.id.button_back_recipe_name_search);
-        backButton.setOnClickListener(new View.OnClickListener(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 finish();
             }
         });
@@ -85,7 +83,6 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_name_search);
         setToolbar();
-        setButtons();
 
         DatabaseTask dataTask = new DatabaseTask();
         try {

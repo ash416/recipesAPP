@@ -27,13 +27,11 @@ public class RecipesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
 
-    private void setButtons(){
-        Button backButton = findViewById(R.id.button_back_recipe);
-        backButton.setOnClickListener(new View.OnClickListener(){
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 finish();
             }
         });
@@ -44,7 +42,6 @@ public class RecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes);
         setToolbar();
-        setButtons();
 
         Intent intent = getIntent();
         String[] mListOfChosenIngredients = intent.getStringArrayListExtra("chosen_ingredients").toArray(new String[0]);

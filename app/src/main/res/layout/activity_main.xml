@@ -23,36 +23,55 @@
             android:layout_gravity="center"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
     </android.support.v7.widget.Toolbar>
+<LinearLayout
+    android:layout_below="@id/toolbar_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center">
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/find_recipes_by_ing"
-        android:layout_width="240dp"
-        android:layout_height="59dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="75dp"
+        android:layout_width="match_parent"
+        android:layout_height="25sp"
+        android:layout_weight="1"
+        android:layout_marginBottom="20sp"
         android:background="@color/green"
         android:text="@string/recipes_by_ing"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_marginLeft="25sp"
+        android:layout_marginRight="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.713" />
+         />
 
     <Button
         android:id="@+id/find_recipes_by_name"
-        android:layout_width="240dp"
-        android:layout_height="59dp"
-        android:layout_above="@+id/find_recipes_by_ing"
-        android:layout_alignLeft="@+id/find_recipes_by_ing"
-        android:layout_alignStart="@+id/find_recipes_by_ing"
-        android:layout_marginBottom="23dp"
+        android:layout_width="match_parent"
+        android:layout_height="25sp"
+        android:layout_weight="1"
+        android:layout_marginBottom="20sp"
         android:background="@color/green"
         android:text="@string/recipes_by_name"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_marginLeft="25sp"
+        android:layout_marginRight="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.885" />
-
+      />
+</LinearLayout>
 </RelativeLayout>
