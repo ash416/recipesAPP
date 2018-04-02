@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.sql.SQLException;
+
 public class AlertDialogWindow extends DialogFragment {
     @SuppressLint("ResourceType")
     @Override
@@ -20,10 +22,19 @@ public class AlertDialogWindow extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setView(inflater.inflate(R.layout.dialog_window, null))
-        .setNegativeButton(R.id.allert_ok_button, new DialogInterface.OnClickListener() {
+        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.d("********************", "ok");
+                try {
+                    MainActivity.mDatabaseAdapter.connectToDatabase();
+                } catch (DatabaseAdapter.DatabaseAdapterSQLException ex){
+                    int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
+                    if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
+                        MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                        DialogFragment dialogFragment = new AlertDialogWindow();
+                        dialogFragment.show(getFragmentManager(), "dlg");
+                    }
+                }
             }
         });
         return builder.create();

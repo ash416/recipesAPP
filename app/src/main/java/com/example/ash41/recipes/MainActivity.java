@@ -1,5 +1,6 @@
 package com.example.ash41.recipes;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         setToolbar();
         setButtons();
         ImageView imageView = (ImageView) findViewById(R.id.logo);
-        imageView.setImageResource(R.drawable.recipe);
+        imageView.setImageResource(R.drawable.logo2);
         Log.d(TAG, "Connection to database: begins in background");
         ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
         connectionToDatabaseTask.execute();
@@ -66,24 +67,19 @@ public class MainActivity extends AppCompatActivity {
             mDatabaseAdapter =  new DatabaseAdapter();
             try {
                 mDatabaseAdapter.connectToDatabase();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (DatabaseAdapter.DatabaseAdapterSQLException ex){
+                int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
+                if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
+                    MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                    DialogFragment dialogFragment = new AlertDialogWindow();
+                    dialogFragment.show(getFragmentManager(), "dlg");
+                }
             }
             return null;
         }
     }
     protected void onDestroy(){
-        try {
-            mDatabaseAdapter.closeConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        mDatabaseAdapter.closeConnection();
         super.onDestroy();
     }
 };

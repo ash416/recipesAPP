@@ -33,15 +33,15 @@
                 android:layout_weight="9"
                 android:layout_marginStart="20dp" />
 
-            <CheckBox
+            <Button
                 android:id="@+id/ingredient_checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:button="@android:drawable/btn_dialog"
+                android:layout_margin="5dp"
+                android:background="@drawable/ic_action_navigation_close"
                 android:checked="true" />
         </LinearLayout>
-
 
     </android.support.v7.widget.CardView>
 

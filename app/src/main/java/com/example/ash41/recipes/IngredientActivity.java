@@ -105,29 +105,28 @@ public class IngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient);
-        DatabaseTask databaseTask = new DatabaseTask();
-        DialogFragment dialogFragment = new AlertDialogWindow();
-        dialogFragment.show(getFragmentManager(), "dlg");
-        try {
-            ingredients = databaseTask.execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
-            if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
-                MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
-                //DialogFragment dialogFragment = new AlertDialogWindow();
-            }
-        }
+        ingredients = getIngredientsInBackground();
         setButtons();
         setToolbar();
-        ingredients  = getResources().getStringArray(R.array.ingredients_array);
         mIngredientRecyclerView = findViewById(R.id.ingredient_recycler_view);
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mListOfChosenIngredients = new ArrayList<>();
         setSearchView();
     }
-
+    public List<String> getIngredientsInBackground(){
+        DatabaseTask databaseTask = new DatabaseTask();
+        try {
+            ingredients = databaseTask.execute().get();
+        } catch (Exception e) {
+            int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
+            if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
+                MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                DialogFragment dialogFragment = new AlertDialogWindow();
+                dialogFragment.show(getFragmentManager(), "dlg");
+            }
+        }
+        return ingredients;
+    }
     public static void showListOfChosenIngredients(List<String> mListOfChosenIngredients){
         mIngredientRecyclerAdapter = new IngredientRecyclerAdapter(mListOfChosenIngredients);
         mIngredientRecyclerView.setAdapter(mIngredientRecyclerAdapter);
@@ -144,10 +143,13 @@ public class IngredientActivity extends AppCompatActivity {
                         return ing1.compareTo(ing2);
                     }
                 });
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (DatabaseAdapter.DatabaseAdapterSQLException e) {
+                int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
+                if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
+                    MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                    DialogFragment dialogFragment = new AlertDialogWindow();
+                    dialogFragment.show(getFragmentManager(), "dlg");
+                }
             }
             return ingredients;
         }

@@ -1,5 +1,6 @@
 package com.example.ash41.recipes;
 
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -108,10 +109,14 @@ public class RecipesNameSearchActivity extends AppCompatActivity {
                         return rec1.getName().compareTo(rec2.getName());
                     }
                 });
-            } catch (SQLException e) {
+            } catch (DatabaseAdapter.DatabaseAdapterSQLException e) {
                 e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
+                if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
+                    MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                    DialogFragment dialogFragment = new AlertDialogWindow();
+                    dialogFragment.show(getFragmentManager(), "dlg");
+                }
             }
             return recipes;
         }

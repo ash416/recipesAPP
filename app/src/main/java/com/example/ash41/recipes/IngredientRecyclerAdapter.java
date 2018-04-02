@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -17,20 +18,17 @@ public class IngredientRecyclerAdapter extends RecyclerView.Adapter<IngredientRe
     private String TAG = "INGREDIENT RECYCLER ADAPTER";
     class ViewHolder extends RecyclerView.ViewHolder {
         final TextView ingredientName;
-        final CheckBox ingredientCheckbox;
+        final Button ingredientDeleteButton;
         ViewHolder(View view) {
             super(view);
             ingredientName = view.findViewById(R.id.ingredient_name);
-            ingredientCheckbox = view.findViewById(R.id.ingredient_checkbox);
-            ingredientCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            ingredientDeleteButton = view.findViewById(R.id.ingredient_checkbox);
+            ingredientDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (!isChecked){
-                        int position = getLayoutPosition();
-                        Log.d(TAG, ingredients.get(position));
-                        ingredients.remove(ingredients.get(position));
-                        IngredientActivity.showListOfChosenIngredients(ingredients);
-                    }
+                public void onClick(View v) {
+                    int position = getLayoutPosition();
+                    ingredients.remove(ingredients.get(position));
+                    IngredientActivity.showListOfChosenIngredients(ingredients);
                 }
             });
         }
