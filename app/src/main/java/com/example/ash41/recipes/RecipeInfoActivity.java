@@ -27,25 +27,24 @@ public class RecipeInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_info);
         setToolbar();
-        setButtons();
         dataInitialization();
         setContext();
     }
-    private void setButtons(){
-        Button backButton = findViewById(R.id.button_back_recipe_info);
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
-            }
-        });
-    }
+
     private void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar_recipes_info);
         TextView mTitle = toolbar.findViewById(R.id.toolbar_title_recipe_info);
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void dataInitialization(){

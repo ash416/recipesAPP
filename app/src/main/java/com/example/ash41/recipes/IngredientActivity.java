@@ -82,6 +82,14 @@ public class IngredientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private void setButtons(){
         final Button findReceptButton = findViewById(R.id.find_recipes_by_ing_button);
@@ -91,13 +99,6 @@ public class IngredientActivity extends AppCompatActivity {
                 Intent intent = new Intent(IngredientActivity.this, RecipesActivity.class);
                 intent.putStringArrayListExtra("chosen_ingredients", (ArrayList<String>) mListOfChosenIngredients);
                 startActivity(intent);
-            }
-        });
-        final Button backButton = findViewById(R.id.button_back_ingredient);
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                finish();
             }
         });
     }
