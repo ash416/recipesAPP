@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Recipes</string>
+    <string name="app_name">Есть смысл</string>
     <string name="recipes_by_ing">По ингредиентам</string>
     <string name="recipes_by_name">По названию</string>
     <string name="search">Поиск…</string>
