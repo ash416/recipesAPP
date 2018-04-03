@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,14 +27,17 @@ public class AlertDialogWindow extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 try {
-                    MainActivity.mDatabaseAdapter.connectToDatabase();
-                } catch (DatabaseAdapter.DatabaseAdapterSQLException ex){
-                    int connectionCounter = MainActivity.mDatabaseAdapter.getConnectionCounter();
-                    if (connectionCounter < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT){
-                        MainActivity.mDatabaseAdapter.setConnectionCounter(connectionCounter + 1);
+                    while (MainActivity.mDatabaseAdapter.getConnectionCounter() < MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT && !MainActivity.mDatabaseAdapter.isConnected()){
+                        MainActivity.mDatabaseAdapter.connectToDatabase();
+                        MainActivity.mDatabaseAdapter.setConnectionCounter(MainActivity.mDatabaseAdapter.getConnectionCounter() + 1);
+                    }
+                    if (MainActivity.mDatabaseAdapter.getConnectionCounter() >= MainActivity.mDatabaseAdapter.MAX_CONNECTION_COUNT || !MainActivity.mDatabaseAdapter.isConnected()){
+                        MainActivity.mDatabaseAdapter.setConnectionCounter(0);
                         DialogFragment dialogFragment = new AlertDialogWindow();
                         dialogFragment.show(getFragmentManager(), "dlg");
                     }
+                } catch (DatabaseAdapter.DatabaseAdapterSQLException ex){
+                    ex.printStackTrace();
                 }
             }
         });
