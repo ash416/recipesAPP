@@ -17,6 +17,7 @@ import java.util.List;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
     private List<Recipe> recipes;
     private boolean ifNameSearch = false;
+    private boolean ifFavorites = false;
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         final ImageView imageView;
@@ -59,7 +60,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.nameView.setText(recipe.getName());
         Picasso.with(viewHolder.imageView.getContext()).load(recipe.getImage())
                 .into(viewHolder.imageView);
-        if (!ifNameSearch) {
+        if (!ifNameSearch && !ifFavorites) {
             viewHolder.infoView.setText("Докупить: " + recipe.getCountNeedIngredients());
         }
     }
@@ -70,4 +71,5 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     void setNameSearchFlag(boolean fl){
         this.ifNameSearch = fl;
     }
+    void setFavoritesFlag(boolean fl) { this.ifFavorites = fl; }
 }

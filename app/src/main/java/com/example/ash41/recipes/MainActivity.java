@@ -1,6 +1,9 @@
 package com.example.ash41.recipes;
 
+import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,10 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MAIN ACTIVITY";
     public static DatabaseAdapter mDatabaseAdapter;
+    public static FavoritesDatabaseAdapter mFavoritesDatabaseAdapter;
+    public static ArrayList<Recipe> favRecipes;
+    public static HashSet<String> nameFavRecipes;
 
     private void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar_main);
@@ -46,20 +54,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setImage(){
+        ImageView imageView = findViewById(R.id.logo);
+        imageView.setImageResource(R.drawable.recipe);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbar();
         setButtons();
-        ImageView imageView = (ImageView) findViewById(R.id.logo);
-        imageView.setImageResource(R.drawable.recipe);
+        setImage();
+
         Log.d(TAG, "Connection to database: begins in background");
         ConnectionToDatabaseTask connectionToDatabaseTask = new ConnectionToDatabaseTask();
         connectionToDatabaseTask.execute();
         Log.d(TAG, "Connection to database: established in background");
 
+        mFavoritesDatabaseAdapter = new FavoritesDatabaseAdapter(this);
+        ConnectionToLocalDatabaseTask connectionToLocalDatabaseTask = new ConnectionToLocalDatabaseTask();
+        connectionToLocalDatabaseTask.execute();
     }
+
     class ConnectionToDatabaseTask extends AsyncTask<Void, Void, Void >{
         @Override
         protected Void doInBackground(Void... voids) {
@@ -78,12 +95,25 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
     }
+
+    class ConnectionToLocalDatabaseTask extends AsyncTask<Void, Void, Void>{
+        @Override
+        protected Void doInBackground(Void... voids){
+            mFavoritesDatabaseAdapter.openConnection();
+            favRecipes = mFavoritesDatabaseAdapter.getAllData();
+            return null;
+        }
+    }
+
     protected void onDestroy(){
         try {
             mDatabaseAdapter.closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        mFavoritesDatabaseAdapter.closeConnection();
         super.onDestroy();
     }
-};
+
+
+}

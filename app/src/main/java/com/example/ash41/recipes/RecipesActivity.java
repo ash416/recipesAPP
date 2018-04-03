@@ -19,7 +19,6 @@ import java.util.Comparator;
 
 public class RecipesActivity extends AppCompatActivity {
     static final String TAG = "RECIPES ACTIVITY";
-    RecyclerView mRecyclerView;
 
     private void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar_recipes);
@@ -78,7 +77,7 @@ public class RecipesActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Recipe> result) {
-            mRecyclerView = findViewById(R.id.my_recycler_view);
+            RecyclerView mRecyclerView = findViewById(R.id.my_recycler_view);
             mRecyclerView.setHasFixedSize(true);
             RecyclerView.Adapter mAdapter = new RecyclerAdapter(result);
             mRecyclerView.setAdapter(mAdapter);
