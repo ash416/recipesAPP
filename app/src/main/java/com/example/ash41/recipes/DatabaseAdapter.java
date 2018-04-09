@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class DatabaseAdapter {
-    private static final String url = "jdbc:mysql://128.72.47.234:13826/db_recipes?useUnicode=true&characterEncoding=utf-8";
+    private static final String url = "jdbc:mysql://91.240.84.78:3306/recipes_db?useUnicode=true&characterEncoding=utf-8";
     private static final String user = "root";
     private static final String password = "15263A";
     private static final String TAG = "DATABASE ADAPTER";
