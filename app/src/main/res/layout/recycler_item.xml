@@ -50,7 +50,9 @@
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="@android:color/background_dark"
                     android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:ellipsize="end"
+                    android:maxLines="3"/>
 
                 <TextView
                     android:id="@+id/info"
