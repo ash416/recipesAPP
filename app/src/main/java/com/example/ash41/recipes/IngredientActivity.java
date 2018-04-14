@@ -29,7 +29,7 @@ public class IngredientActivity extends AppCompatActivity {
     static final String TAG = "INGREDIENT ACTIVITY";
     private static RecyclerView mIngredientRecyclerView;
     private static IngredientRecyclerAdapter mIngredientRecyclerAdapter;
-    private List<String> ingredients;;
+    private List<String> ingredients;
     private List<String> mListOfChosenIngredients;
 
     @SuppressLint("RestrictedApi")
@@ -62,7 +62,7 @@ public class IngredientActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 List<String> foundIngredients = new ArrayList<>();
-                if (!newText.isEmpty() && newText != null){
+                if (!newText.isEmpty()){
                     for (String ingredient : ingredients){
                         if (ingredient.toLowerCase().indexOf(newText.toLowerCase()) == 0){
                             foundIngredients.add(ingredient);
@@ -88,6 +88,13 @@ public class IngredientActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         mTitle.setText(toolbar.getTitle());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar.setNavigationIcon(R.drawable.ic_action_navigation_arrow_back);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
     private void setButtons(){
         final Button findReceptButton = findViewById(R.id.find_recipes_by_ing_button);
