@@ -1,30 +1,22 @@
 package com.example.ash41.recipes;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
-//import static android.support.v4.content.ContextCompat.startActivity;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
     private List<Recipe> recipes;
+    private boolean ifNameSearch = false;
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         final ImageView imageView;
@@ -42,6 +34,10 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             int position = getLayoutPosition();
             Intent intent = new Intent(view.getContext(), RecipeInfoActivity.class);
             intent.putExtra("name", recipes.get(position).getName());
+            intent.putExtra("image", recipes.get(position).getImage());
+            intent.putExtra("description", recipes.get(position).getDescription());
+            ArrayList<String> ingredients = recipes.get(position).getIngredients();
+            intent.putExtra("ingredients", ingredients.toArray(new String[ingredients.size()]));
             intent.putExtra("have_ingredients", recipes.get(position).getHaveIngredients());
             view.getContext().startActivity(intent);
         }
@@ -63,10 +59,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.nameView.setText(recipe.getName());
         Picasso.with(viewHolder.imageView.getContext()).load(recipe.getImage())
                 .into(viewHolder.imageView);
-        viewHolder.infoView.setText("Докупить: " + recipe.getCountNeedIngredients());
+        if (!ifNameSearch) {
+            viewHolder.infoView.setText("Докупить: " + recipe.getCountNeedIngredients());
+        }
     }
     @Override
     public int getItemCount(){
         return recipes.size();
+    }
+    void setNameSearchFlag(boolean fl){
+        this.ifNameSearch = fl;
     }
 }

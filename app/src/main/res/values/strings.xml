@@ -1,8 +1,13 @@
 <resources>
-    <string name="app_name">Recipes</string>
+    <string name="app_name">Есть смысл</string>
     <string name="recipes_by_ing">По ингредиентам</string>
     <string name="recipes_by_name">По названию</string>
-    <string name="search">Поиск...</string>
+    <string name="search">Поиск…</string>
     <string name="find_recipe">Найти рецепт</string>
     <string name="ingredients_search">Поиск по ингредиентам</string>
+    <string name="ingredients_title">Ингредиенты</string>
+    <string name="recipe_title">Рецепт</string>
+    <string name="alert_title">Проблемы с соединением?</string>
+    <string name="alert_text">Пожалуйста, проверьте интернет-соединение.</string>
+    <string name="ok">OK</string>
 </resources>

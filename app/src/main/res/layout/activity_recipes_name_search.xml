@@ -5,31 +5,43 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.ash41.recipes.RecipesActivity"
->
+    tools:context=".RecipesNameSearchActivity">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar_recipes"
+        android:id="@+id/toolbar_name_search"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
         android:background="@color/colorPrimary"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay" >
 
 
         <TextView
-            android:id="@+id/toolbar_title_recipe"
+            android:id="@+id/toolbar_title_recipe_name_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
     </android.support.v7.widget.Toolbar>
 
+    <android.support.v7.widget.SearchView
+        android:id="@+id/recipes_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search"
+        android:textColor="@color/white"
+        android:layout_below="@+id/toolbar_name_search"
+        android:background="@color/green"
+        android:layout_centerVertical="true"
+        app:searchIcon="@drawable/ic_action_action_search"
+        app:closeIcon="@drawable/ic_action_navigation_close_inverted" />
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/recipes_recycler_view"
+        app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar_recipes"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_recipes" />
+        android:layout_below="@+id/recipes_search_view"
+        />
 
 </RelativeLayout>

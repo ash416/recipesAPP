@@ -3,78 +3,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!-- tools:context="com.example.ash41.recipes.IngredientActivity"-->
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".IngredientActivity"
+    >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"/>
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        <TextView
+            android:id="@+id/toolbar_title_ingredient"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+    </android.support.v7.widget.Toolbar>
+
+
+    <android.support.v7.widget.SearchView
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"/>
-    <!--app:searchBackground="@color/colorPrimary"
-    app:searchSuggestionBackground="@color/colorPrimary"/>
-app:searchBackIcon="@drawable/ic_action_navigation_arrow_back_inverted"
-app:searchCloseIcon="@drawable/ic_action_navigation_close_inverted"
-app:searchSuggestionIcon="@drawable/ic_suggestion"-->
+        android:text="@string/search"
+        android:textColor="#000000"
+        android:background="@color/green"
+        android:layout_below="@+id/toolbar"
+        android:layout_centerVertical="true"
+        app:searchIcon="@drawable/ic_action_action_search"
+        app:closeIcon="@drawable/ic_action_navigation_close_inverted"
+        />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constr_listview_layout"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/ingredient_recycler_view"
+        app:layoutManager="LinearLayoutManager"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="400dp"
+        android:layout_below="@+id/search_view"
+        />
+
+    <Button
+        android:id="@+id/find_recipes_by_ing_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar">
+        android:gravity="center"
+        android:text="@string/find_recipe"
+        android:background="@color/green"
+        />
 
-        <ListView
-            android:id="@+id/lstView"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:divider="@color/grey"
-            android:dividerHeight="1dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="NotSibling">
 
-        </ListView>
 
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constr_button_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/constr_listview_layout">
-
-        <Button
-            android:id="@+id/find_recipes_by_ing_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/find_recipe"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
 
 </RelativeLayout>
